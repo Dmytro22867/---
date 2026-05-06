@@ -1,20 +1,36 @@
-def add(a, b):
-    return a + b
+import re
 
-def subtract(a, b):
-    return a - b
-
-def multiply(a, b):
-    return a * b
-
-def divide(a, b):
-    if b == 0:
-        return "Помилка: ділення на нуль!"
-    return a / b
+def calculate(expression):
+    """
+    Обчислює математичний вираз.
+    Підтримує +, -, *, /, (, ), числа з плаваючою комою.
+    """
+    try:
+        # Перевіряємо, чи вираз містить тільки дозволені символи
+        if not re.match(r'^[0-9+\-*/().\s]+$', expression):
+            return "Помилка: недозволені символи у виразі"
+        
+        # Обчислюємо вираз
+        result = eval(expression)
+        
+        # Перевіряємо, чи результат є числом
+        if not isinstance(result, (int, float)):
+            return "Помилка: вираз не повертає число"
+        
+        return result
+    except ZeroDivisionError:
+        return "Помилка: ділення на нуль"
+    except Exception as e:
+        return f"Помилка: {str(e)}"
 
 if __name__ == "__main__":
-    print("--- Математичний модуль готовий ---")
-    print(f"1 + 1 = {add(1, 1)}")
-    print(f"10 - 5 = {subtract(10, 5)}")
-    print(f"3 * 4 = {multiply(3, 4)}")
-    print(f"20 / 4 = {divide(20, 4)}")
+    print("Ласкаво просимо до калькулятора!")
+    print("Введіть математичний вираз (наприклад, 2 + 3 * 4) або 'exit' для виходу.")
+    
+    while True:
+        expression = input("Введіть вираз: ").strip()
+        if expression.lower() == 'exit':
+            print("Дякуємо за використання калькулятора!")
+            break
+        result = calculate(expression)
+        print(f"Результат: {result}")
